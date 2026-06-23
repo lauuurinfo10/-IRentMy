@@ -10,7 +10,7 @@ class RentalRepository(
     private val api: ApiService,
     private val dao: RentalDao
 ) {
-   
+
     suspend fun getRentals(): List<RentalItem> =
         try {
             val remote = api.getRentals()
