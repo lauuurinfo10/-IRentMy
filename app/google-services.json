@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "995986112515",
+    "project_id": "irentmy-7360f",
+    "storage_bucket": "irentmy-7360f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995986112515:android:c6c144dc2d13b1f47b4e36",
+        "android_client_info": {
+          "package_name": "com.example.irentmy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAngJb2lbA-hX-hKjCnul5Z2qzSKHT_dYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
