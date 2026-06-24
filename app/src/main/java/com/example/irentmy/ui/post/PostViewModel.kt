@@ -1,7 +1,5 @@
 package com.example.irentmy.ui.post
 
-
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +20,6 @@ sealed class PostState {
 
 class PostViewModel(app: Application) : AndroidViewModel(app) {
     private val repository: RentalRepository
-
     private val _state = MutableStateFlow<PostState>(PostState.Idle)
     val state: StateFlow<PostState> = _state
 
@@ -32,17 +29,24 @@ class PostViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun post(item: RentalItem) {
-        if (item.title.isBlank()) {
-            _state.value = PostState.Error("Titlul e obligatoriu")
-            return
+        val problem = when {
+            item.title.isBlank() -> "Completează titlul"
+            item.description.isBlank() -> "Completează descrierea"
+            item.ownerName.isBlank() -> "Completează numele proprietarului"
+            item.pricePerHour <= 0.0 -> "Prețul pe oră trebuie să fie peste 0"
+            item.pricePerDay <= 0.0 -> "Prețul pe zi trebuie să fie peste 0"
+            item.pricePerMonth <= 0.0 -> "Prețul pe lună trebuie să fie peste 0"
+            else -> null
         }
+        if (problem != null) { _state.value = PostState.Error(problem); return }
+
         _state.value = PostState.Loading
         viewModelScope.launch {
             try {
                 repository.createRental(item)
                 _state.value = PostState.Success
             } catch (e: Exception) {
-                _state.value = PostState.Error("Nu s-a putut publica anuntul")
+                _state.value = PostState.Error("Nu s-a putut publica anunțul")
             }
         }
     }
