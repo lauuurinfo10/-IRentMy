@@ -27,14 +27,12 @@ fun AccountScreen(
     val bio by viewModel.bio.collectAsState()
     val myListings by viewModel.myListings.collectAsState()
 
-    // dacă există deja un nume salvat, pornim în modul "vizualizare" (buton Modifică)
     var editing by rememberSaveable { mutableStateOf(name.isBlank()) }
     val letter = name.firstOrNull()?.uppercase() ?: "?"
 
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState())
     ) {
-        // --- HEADER colorat cu avatar ---
         Column(
             Modifier.fillMaxWidth()
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -61,7 +59,6 @@ fun AccountScreen(
         }
 
         Column(Modifier.padding(16.dp)) {
-            // --- CARD: editare profil ---
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp)) {
                     Text("Profil", style = MaterialTheme.typography.titleMedium)

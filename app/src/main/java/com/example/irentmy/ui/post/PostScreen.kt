@@ -26,9 +26,7 @@ fun PostScreen(
     var ph by rememberSaveable { mutableStateOf("") }
     var pd by rememberSaveable { mutableStateOf("") }
     var pm by rememberSaveable { mutableStateOf("") }
-    // se preia automat numele din profil → anunțul apare în "Anunțurile mele"
     var owner by rememberSaveable { mutableStateOf(PrefsManager.getName(context)) }
-    var imageUrl by rememberSaveable { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(state) {
@@ -40,8 +38,7 @@ fun PostScreen(
 
     Column(Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
         Text("Postează un anunț", style = MaterialTheme.typography.headlineSmall)
-        Text("Toate câmpurile sunt obligatorii (poza e opțională)",
-            style = MaterialTheme.typography.bodySmall)
+        Text("Toate câmpurile sunt obligatorii", style = MaterialTheme.typography.bodySmall)
         Spacer(Modifier.height(16.dp))
 
         OutlinedTextField(value = title, onValueChange = { title = it },
@@ -68,10 +65,6 @@ fun PostScreen(
         OutlinedTextField(value = owner, onValueChange = { owner = it },
             label = { Text("Numele tău (proprietar) *") }, singleLine = true,
             modifier = Modifier.fillMaxWidth())
-        Spacer(Modifier.height(8.dp))
-        OutlinedTextField(value = imageUrl, onValueChange = { imageUrl = it },
-            label = { Text("Link poză (opțional)") }, singleLine = true,
-            modifier = Modifier.fillMaxWidth())
 
         if (state is PostState.Error) {
             Spacer(Modifier.height(8.dp))
@@ -87,7 +80,7 @@ fun PostScreen(
                         pricePerHour = ph.toDoubleOrNull() ?: 0.0,
                         pricePerDay = pd.toDoubleOrNull() ?: 0.0,
                         pricePerMonth = pm.toDoubleOrNull() ?: 0.0,
-                        ownerName = owner, imageUrl = imageUrl
+                        ownerName = owner
                     )
                 )
             },

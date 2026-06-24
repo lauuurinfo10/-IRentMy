@@ -20,30 +20,25 @@ private val avatarColors = listOf(
 
 @Composable
 fun RentalCard(item: RentalItem, onRentClick: () -> Unit) {
-    val color = avatarColors[Math.floorMod(item.title.hashCode(), avatarColors.size)]
-    val letter = item.title.firstOrNull()?.uppercase() ?: "?"
+    val color = avatarColors[Math.floorMod(item.ownerName.hashCode(), avatarColors.size)]
+    val letter = item.ownerName.firstOrNull()?.uppercase() ?: "?"
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(Modifier.padding(16.dp)) {
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
-                    modifier = Modifier.size(52.dp).clip(CircleShape).background(color),
+                    Modifier.size(52.dp).clip(CircleShape).background(color),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(letter, color = Color.White,
-                        style = MaterialTheme.typography.titleLarge)
+                    Text(letter, color = Color.White, style = MaterialTheme.typography.titleLarge)
                 }
                 Spacer(Modifier.width(12.dp))
                 Column {
                     Text(item.title, style = MaterialTheme.typography.titleLarge)
-                    Text("Proprietar: ${item.ownerName}",
-                        style = MaterialTheme.typography.labelMedium)
+                    Text("Proprietar: ${item.ownerName}", style = MaterialTheme.typography.labelMedium)
                 }
             }
 
@@ -52,17 +47,14 @@ fun RentalCard(item: RentalItem, onRentClick: () -> Unit) {
                 style = MaterialTheme.typography.bodyMedium)
 
             Spacer(Modifier.height(12.dp))
-            Text("Preț/oră: ${item.pricePerHour} lei",
-                color = MaterialTheme.colorScheme.primary)
-            Text("Preț/zi: ${item.pricePerDay} lei",
-                color = MaterialTheme.colorScheme.primary)
-            Text("Preț/lună: ${item.pricePerMonth} lei",
-                color = MaterialTheme.colorScheme.primary)
+            Text("Preț/oră: ${item.pricePerHour} lei", color = MaterialTheme.colorScheme.primary)
+            Text("Preț/zi: ${item.pricePerDay} lei", color = MaterialTheme.colorScheme.primary)
+            Text("Preț/lună: ${item.pricePerMonth} lei", color = MaterialTheme.colorScheme.primary)
 
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth()) {
                 Spacer(Modifier.weight(1f))
-                Button(onClick = onRentClick) { Text("Inchiriaza") }
+                Button(onClick = onRentClick) { Text("Închiriază") }
             }
         }
     }

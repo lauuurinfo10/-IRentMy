@@ -29,7 +29,6 @@ class AccountViewModel(app: Application) : AndroidViewModel(app) {
 
     val email: String = PrefsManager.getEmail(ctx) ?: ""
 
-    // se reîmprospătează automat la fiecare schimbare din Room sau a numelui
     val myListings: StateFlow<List<RentalItem>> =
         combine(db.rentalDao().getAllFlow(), _name) { all, myName ->
             if (myName.isBlank()) emptyList()

@@ -44,7 +44,6 @@ android {
 }
 
 dependencies {
-    // ===== Generate de wizard — NU le șterge =====
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -80,7 +79,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
 
-    implementation("io.coil-kt:coil-compose:2.7.0")
 }
 
 kotlin {
