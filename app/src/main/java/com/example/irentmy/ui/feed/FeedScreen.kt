@@ -12,7 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun FeedScreen(viewModel: FeedViewModel = viewModel()) {
+fun FeedScreen(
+    onRentClick: (String) -> Unit,
+    viewModel: FeedViewModel = viewModel()
+) {
     val ui by viewModel.uiState.collectAsState()
 
     Box(Modifier.fillMaxSize()) {
@@ -23,7 +26,9 @@ fun FeedScreen(viewModel: FeedViewModel = viewModel()) {
                 Modifier.align(Alignment.Center)
             )
             else -> LazyColumn(Modifier.fillMaxSize()) {
-                items(ui.items) { item -> RentalCard(item) }
+                items(ui.items) { item ->
+                    RentalCard(item = item, onRentClick = { onRentClick(item.id) })
+                }
             }
         }
     }

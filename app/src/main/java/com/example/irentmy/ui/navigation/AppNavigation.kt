@@ -1,6 +1,5 @@
 package com.example.irentmy.ui.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
@@ -8,8 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.irentmy.ui.auth.LoginScreen
 import com.example.irentmy.ui.auth.RegisterScreen
-import com.example.irentmy.ui.feed.FeedScreen
 import com.example.irentmy.util.PrefsManager
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AppNavigation() {
@@ -21,11 +20,8 @@ fun AppNavigation() {
         composable("login") {
             LoginScreen(
                 onLoginSuccess = { email ->
-                    PrefsManager.saveEmail(context, email)   // SharedPreferences
-                    navController.navigate("feed") {
-                        // Back din Feed NU mai duce la Login
-                        popUpTo("login") { inclusive = true }
-                    }
+                    PrefsManager.saveEmail(context, email)
+                    navController.navigate("main") { popUpTo("login") { inclusive = true } }
                 },
                 onNavigateToRegister = { navController.navigate("register") }
             )
@@ -35,14 +31,20 @@ fun AppNavigation() {
             RegisterScreen(
                 onRegisterSuccess = { email ->
                     PrefsManager.saveEmail(context, email)
-                    navController.navigate("feed") {
-                        popUpTo("login") { inclusive = true }
-                    }
+                    navController.navigate("main") { popUpTo("login") { inclusive = true } }
                 },
                 onBack = { navController.popBackStack() }
             )
         }
 
-        composable("feed") { FeedScreen() }
+        composable("main") {
+            MainScreen(
+                onLogout = {
+                    FirebaseAuth.getInstance().signOut()
+                    PrefsManager.clear(context)
+                    navController.navigate("login") { popUpTo(0) { inclusive = true } }
+                }
+            )
+        }
     }
 }

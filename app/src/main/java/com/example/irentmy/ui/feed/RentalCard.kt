@@ -1,6 +1,5 @@
 package com.example.irentmy.ui.feed
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -10,10 +9,8 @@ import androidx.compose.ui.unit.dp
 import com.example.irentmy.data.RentalItem
 
 @Composable
-fun RentalCard(item: RentalItem) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)
-    ) {
+fun RentalCard(item: RentalItem, onRentClick: () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
         Column(Modifier.padding(16.dp)) {
             Text(item.title, style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(4.dp))
@@ -27,10 +24,14 @@ fun RentalCard(item: RentalItem) {
             Text("Preț/zi: ${item.pricePerDay} lei")
             Text("Preț/lună: ${item.pricePerMonth} lei")
             Spacer(Modifier.height(8.dp))
-            Text(
-                "Proprietar: ${item.ownerName}",
-                style = MaterialTheme.typography.labelMedium
-            )
+            Text("Proprietar: ${item.ownerName}", style = MaterialTheme.typography.labelMedium)
+
+            Spacer(Modifier.height(12.dp))
+
+            Row(Modifier.fillMaxWidth()) {
+                Spacer(Modifier.weight(1f))
+                Button(onClick = onRentClick) { Text("Închiriază") }
+            }
         }
     }
 }
