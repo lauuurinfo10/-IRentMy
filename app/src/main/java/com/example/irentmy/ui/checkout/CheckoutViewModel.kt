@@ -33,7 +33,7 @@ class CheckoutViewModel(app: Application) : AndroidViewModel(app) {
             val durationMillis = when (unit) {
                 "oră" -> quantity * 60L * 60L * 1000L
                 "zi"  -> quantity * 24L * 60L * 60L * 1000L
-                else  -> quantity * 30L * 24L * 60L * 60L * 1000L   
+                else  -> quantity * 30L * 24L * 60L * 60L * 1000L
             }
             db.rentedDao().insert(
                 RentedItem(
