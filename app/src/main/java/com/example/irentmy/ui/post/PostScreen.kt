@@ -13,18 +13,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.irentmy.data.RentalItem
+import androidx.compose.ui.platform.LocalContext
+import com.example.irentmy.util.PrefsManager
 
 @Composable
 fun PostScreen(
     onPosted: () -> Unit,
     viewModel: PostViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     var title by rememberSaveable { mutableStateOf("") }
     var desc by rememberSaveable { mutableStateOf("") }
     var ph by rememberSaveable { mutableStateOf("") }
     var pd by rememberSaveable { mutableStateOf("") }
     var pm by rememberSaveable { mutableStateOf("") }
-    var owner by rememberSaveable { mutableStateOf("") }
+    var owner by rememberSaveable { mutableStateOf(PrefsManager.getName(context)) }
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(state) {

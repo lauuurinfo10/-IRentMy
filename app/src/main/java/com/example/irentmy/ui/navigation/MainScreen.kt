@@ -1,9 +1,8 @@
 package com.example.irentmy.ui.navigation
 
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -21,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.irentmy.ui.account.AccountScreen
 import com.example.irentmy.ui.checkout.CheckoutScreen
 import com.example.irentmy.ui.feed.FeedScreen
 import com.example.irentmy.ui.post.PostScreen
@@ -54,10 +54,10 @@ fun MainScreen(onLogout: () -> Unit) {
                     label = { Text("Închirieri") }
                 )
                 NavigationBarItem(
-                    selected = false,
-                    onClick = onLogout,
-                    icon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Ieșire") },
-                    label = { Text("Ieșire") }
+                    selected = current == "account",
+                    onClick = { innerNav.navigate("account") { launchSingleTop = true } },
+                    icon = { Icon(Icons.Filled.AccountCircle, contentDescription = "Cont") },
+                    label = { Text("Cont") }
                 )
             }
         }
@@ -76,6 +76,7 @@ fun MainScreen(onLogout: () -> Unit) {
                 })
             }
             composable("rentals") { RentalsScreen() }
+            composable("account") { AccountScreen(onLogout = onLogout) }
             composable(
                 "checkout/{itemId}",
                 arguments = listOf(navArgument("itemId") { type = NavType.StringType })
