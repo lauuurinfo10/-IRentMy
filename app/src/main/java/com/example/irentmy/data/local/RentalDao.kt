@@ -14,4 +14,11 @@ interface RentalDao {
 
     @Query("SELECT * FROM rental_items")
     suspend fun getAll(): List<RentalItem>
+
+    @Query("SELECT * FROM rental_items WHERE id = :id LIMIT 1")
+    suspend fun getById(id: String): RentalItem?
+
+
+    @Query("SELECT * FROM rental_items")
+    suspend fun getAllOnce(): List<RentalItem>
 }

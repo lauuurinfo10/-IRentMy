@@ -5,10 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.irentmy.data.RentalItem
+import com.example.irentmy.data.RentedItem
 
-@Database(entities = [RentalItem::class], version = 1, exportSchema = false)
+@Database(
+    entities = [RentalItem::class, RentedItem::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun rentalDao(): RentalDao
+    abstract fun rentedDao(): RentedDao
 
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null

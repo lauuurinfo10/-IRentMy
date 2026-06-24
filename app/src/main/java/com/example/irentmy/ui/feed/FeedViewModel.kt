@@ -25,11 +25,10 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
     val uiState: StateFlow<FeedUiState> = _uiState.asStateFlow()
 
     init {
-        val dao = AppDatabase.getInstance(app).rentalDao()
-        repository = RentalRepository(RetrofitClient.api, dao)
+        val db = AppDatabase.getInstance(app)
+        repository = RentalRepository(RetrofitClient.api, db.rentalDao(), db.rentedDao())
         loadRentals()
     }
-
     fun loadRentals() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
