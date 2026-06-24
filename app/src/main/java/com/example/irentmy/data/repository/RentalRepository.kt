@@ -10,8 +10,9 @@ class RentalRepository(
     private val api: ApiService,
     private val dao: RentalDao,
     private val rentedDao: RentedDao
+
 ) {
-    // FAZA 1: rețea cu fallback pe Room
+
     suspend fun getRentals(): List<RentalItem> =
         try {
             val remote = api.getRentals()
