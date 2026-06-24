@@ -32,30 +32,38 @@ fun MainScreen(onLogout: () -> Unit) {
     val backStack by innerNav.currentBackStackEntryAsState()
     val current = backStack?.destination?.route
 
+    fun goTo(route: String) {
+        if (current == route) return
+        innerNav.navigate(route) {
+            popUpTo("feed")          // se întoarce la feed (rămâne baza)
+            launchSingleTop = true   // nu deschide același ecran de două ori
+        }
+    }
+
     Scaffold(
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
                     selected = current == "feed",
-                    onClick = { innerNav.navigate("feed") { launchSingleTop = true } },
+                    onClick = { goTo("feed") },
                     icon = { Icon(Icons.Filled.Home, contentDescription = "Anunțuri") },
                     label = { Text("Anunțuri") }
                 )
                 NavigationBarItem(
                     selected = current == "post",
-                    onClick = { innerNav.navigate("post") { launchSingleTop = true } },
+                    onClick = { goTo("post") },
                     icon = { Icon(Icons.Filled.Add, contentDescription = "Postează") },
                     label = { Text("Postează") }
                 )
                 NavigationBarItem(
                     selected = current == "rentals",
-                    onClick = { innerNav.navigate("rentals") { launchSingleTop = true } },
+                    onClick = { goTo("rentals") },
                     icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Închirieri") },
                     label = { Text("Închirieri") }
                 )
                 NavigationBarItem(
                     selected = current == "account",
-                    onClick = { innerNav.navigate("account") { launchSingleTop = true } },
+                    onClick = { goTo("account") },
                     icon = { Icon(Icons.Filled.AccountCircle, contentDescription = "Cont") },
                     label = { Text("Cont") }
                 )
@@ -71,9 +79,7 @@ fun MainScreen(onLogout: () -> Unit) {
                 FeedScreen(onRentClick = { itemId -> innerNav.navigate("checkout/$itemId") })
             }
             composable("post") {
-                PostScreen(onPosted = {
-                    innerNav.navigate("feed") { popUpTo("feed") { inclusive = true } }
-                })
+                PostScreen(onPosted = { goTo("feed") })
             }
             composable("rentals") { RentalsScreen() }
             composable("account") { AccountScreen(onLogout = onLogout) }
@@ -83,7 +89,7 @@ fun MainScreen(onLogout: () -> Unit) {
             ) { entry ->
                 CheckoutScreen(
                     itemId = entry.arguments?.getString("itemId") ?: "",
-                    onDone = { innerNav.navigate("rentals") { popUpTo("feed") } }
+                    onDone = { goTo("rentals") }
                 )
             }
         }

@@ -17,12 +17,12 @@ fun FeedScreen(
     onRentClick: (String) -> Unit,
     viewModel: FeedViewModel = viewModel()
 ) {
-    val ui by viewModel.uiState.collectAsState()
+    val items by viewModel.items.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     val query by viewModel.query.collectAsState()
 
-
-    val visible = if (query.isBlank()) ui.items
-    else ui.items.filter { it.title.contains(query, ignoreCase = true) }
+    val visible = if (query.isBlank()) items
+    else items.filter { it.title.contains(query, ignoreCase = true) }
 
     Column(Modifier.fillMaxSize()) {
         OutlinedTextField(
@@ -35,12 +35,14 @@ fun FeedScreen(
 
         Box(Modifier.fillMaxSize()) {
             when {
-                ui.isLoading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-                visible.isEmpty() -> Text(
-                    if (ui.items.isEmpty()) (ui.error ?: "Niciun anunț disponibil")
-                    else "Niciun rezultat pentru \"$query\"",
-                    Modifier.align(Alignment.Center)
-                )
+                isLoading && items.isEmpty() ->
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                visible.isEmpty() ->
+                    Text(
+                        if (items.isEmpty()) "Niciun anunț disponibil"
+                        else "Niciun rezultat pentru \"$query\"",
+                        Modifier.align(Alignment.Center)
+                    )
                 else -> LazyColumn(Modifier.fillMaxSize()) {
                     items(visible) { item ->
                         RentalCard(item = item, onRentClick = { onRentClick(item.id) })

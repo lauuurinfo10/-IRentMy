@@ -26,7 +26,7 @@ fun PostScreen(
     var ph by rememberSaveable { mutableStateOf("") }
     var pd by rememberSaveable { mutableStateOf("") }
     var pm by rememberSaveable { mutableStateOf("") }
-    var owner by rememberSaveable { mutableStateOf(PrefsManager.getName(context)) }
+    var owner by rememberSaveable { mutableStateOf(PrefsManager.getName(context, PrefsManager.getEmail(context))) }
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(state) {

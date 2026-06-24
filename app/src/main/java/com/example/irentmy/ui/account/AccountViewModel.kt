@@ -21,13 +21,14 @@ class AccountViewModel(app: Application) : AndroidViewModel(app) {
     private val repository = RentalRepository(RetrofitClient.api, db.rentalDao(), db.rentedDao())
     private val ctx = app.applicationContext
 
-    private val _name = MutableStateFlow(PrefsManager.getName(ctx))
+
+    val email: String = PrefsManager.getEmail(ctx)
+
+    private val _name = MutableStateFlow(PrefsManager.getName(ctx, email))
     val name: StateFlow<String> = _name.asStateFlow()
 
-    private val _bio = MutableStateFlow(PrefsManager.getBio(ctx))
+    private val _bio = MutableStateFlow(PrefsManager.getBio(ctx, email))
     val bio: StateFlow<String> = _bio.asStateFlow()
-
-    val email: String = PrefsManager.getEmail(ctx) ?: ""
 
     val myListings: StateFlow<List<RentalItem>> =
         combine(db.rentalDao().getAllFlow(), _name) { all, myName ->
@@ -39,8 +40,8 @@ class AccountViewModel(app: Application) : AndroidViewModel(app) {
     fun onBioChange(v: String) { _bio.value = v }
 
     fun saveProfile() {
-        PrefsManager.saveName(ctx, _name.value.trim())
-        PrefsManager.saveBio(ctx, _bio.value.trim())
+        PrefsManager.saveName(ctx, email, _name.value.trim())
+        PrefsManager.saveBio(ctx, email, _bio.value.trim())
     }
 
     fun deleteListing(id: String) {

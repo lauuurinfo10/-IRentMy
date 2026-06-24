@@ -41,7 +41,7 @@ fun AppNavigation() {
             MainScreen(
                 onLogout = {
                     FirebaseAuth.getInstance().signOut()
-                    PrefsManager.clear(context)
+                    PrefsManager.clearSession(context)
                     navController.navigate("login") { popUpTo(0) { inclusive = true } }
                 }
             )
