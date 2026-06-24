@@ -25,7 +25,9 @@ class RentalRepository(
     suspend fun createRental(item: RentalItem) {
         try {
             val created = api.createRental(item)
-            dao.insertAll(listOf(created))
+            dao.insertAll(listOf(created.copy(
+                imageUrl = item.imageUrl.ifBlank { created.imageUrl }
+            )))
         } catch (e: Exception) {
             val local = item.copy(id = "local-${System.currentTimeMillis()}")
             dao.insertAll(listOf(local))
