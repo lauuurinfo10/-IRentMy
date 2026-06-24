@@ -35,8 +35,8 @@ fun MainScreen(onLogout: () -> Unit) {
     fun goTo(route: String) {
         if (current == route) return
         innerNav.navigate(route) {
-            popUpTo("feed")          // se întoarce la feed (rămâne baza)
-            launchSingleTop = true   // nu deschide același ecran de două ori
+            popUpTo("feed")
+            launchSingleTop = true
         }
     }
 

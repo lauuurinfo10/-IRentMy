@@ -15,7 +15,10 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val context = LocalContext.current
 
-    NavHost(navController = navController, startDestination = "login") {
+
+    val startScreen = if (FirebaseAuth.getInstance().currentUser != null) "main" else "login"
+
+    NavHost(navController = navController, startDestination = startScreen) {
 
         composable("login") {
             LoginScreen(
