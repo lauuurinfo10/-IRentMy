@@ -21,4 +21,7 @@ interface RentalDao {
 
     @Query("SELECT * FROM rental_items")
     suspend fun getAllOnce(): List<RentalItem>
+
+    @Query("DELETE FROM rental_items WHERE id = :id")
+    suspend fun deleteById(id: String)
 }

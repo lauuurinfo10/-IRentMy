@@ -35,4 +35,15 @@ class RentalRepository(
     suspend fun saveRented(rented: RentedItem) = rentedDao.insert(rented)
 
     fun getRentedItems() = rentedDao.getAll()
+
+
+    suspend fun deleteRental(id: String) {
+        try {
+
+            if (!id.startsWith("local-")) api.deleteRental(id)
+        } catch (e: Exception) {
+
+        }
+        dao.deleteById(id)
+    }
 }

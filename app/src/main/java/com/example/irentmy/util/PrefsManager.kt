@@ -5,18 +5,19 @@ import android.content.Context
 object PrefsManager {
     private const val PREFS = "user_prefs"
     private const val KEY_EMAIL = "user_email"
+    private const val KEY_NAME = "user_name"
+    private const val KEY_BIO = "user_bio"
 
-    fun saveEmail(context: Context, email: String) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .edit().putString(KEY_EMAIL, email).apply()
-    }
+    private fun prefs(c: Context) = c.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    fun getEmail(context: Context): String? =
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getString(KEY_EMAIL, null)
+    fun saveEmail(c: Context, v: String) = prefs(c).edit().putString(KEY_EMAIL, v).apply()
+    fun getEmail(c: Context): String? = prefs(c).getString(KEY_EMAIL, null)
 
-    fun clear(context: Context) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .edit().clear().apply()
-    }
+    fun saveName(c: Context, v: String) = prefs(c).edit().putString(KEY_NAME, v).apply()
+    fun getName(c: Context): String = prefs(c).getString(KEY_NAME, "") ?: ""
+
+    fun saveBio(c: Context, v: String) = prefs(c).edit().putString(KEY_BIO, v).apply()
+    fun getBio(c: Context): String = prefs(c).getString(KEY_BIO, "") ?: ""
+
+    fun clear(c: Context) = prefs(c).edit().clear().apply()
 }
