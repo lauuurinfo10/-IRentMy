@@ -9,22 +9,18 @@ data class RentalItem(
     @PrimaryKey
     @SerializedName("id")
     val id: String = "",
-
     @SerializedName("title")
     val title: String = "",
-
     @SerializedName("description")
     val description: String = "",
-
     @SerializedName("pricePerHour")
     val pricePerHour: Double = 0.0,
-
     @SerializedName("pricePerDay")
     val pricePerDay: Double = 0.0,
-
     @SerializedName("pricePerMonth")
     val pricePerMonth: Double = 0.0,
-
     @SerializedName("ownerName")
-    val ownerName: String = ""
+    val ownerName: String = "",
+    @SerializedName("imageUrl")
+    val imageUrl: String = ""
 )

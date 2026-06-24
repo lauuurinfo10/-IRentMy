@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.irentmy.data.RentalItem
-
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RentalDao {
@@ -15,12 +15,11 @@ interface RentalDao {
     @Query("SELECT * FROM rental_items")
     suspend fun getAll(): List<RentalItem>
 
+    @Query("SELECT * FROM rental_items")
+    fun getAllFlow(): Flow<List<RentalItem>>
+
     @Query("SELECT * FROM rental_items WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): RentalItem?
-
-
-    @Query("SELECT * FROM rental_items")
-    suspend fun getAllOnce(): List<RentalItem>
 
     @Query("DELETE FROM rental_items WHERE id = :id")
     suspend fun deleteById(id: String)

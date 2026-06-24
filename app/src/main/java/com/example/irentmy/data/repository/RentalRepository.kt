@@ -19,7 +19,7 @@ class RentalRepository(
             dao.insertAll(remote)
             remote
         } catch (e: Exception) {
-            dao.getAllOnce()
+            dao.getAll()
         }
 
     suspend fun createRental(item: RentalItem) {

@@ -9,7 +9,7 @@ import com.example.irentmy.data.RentedItem
 
 @Database(
     entities = [RentalItem::class, RentedItem::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

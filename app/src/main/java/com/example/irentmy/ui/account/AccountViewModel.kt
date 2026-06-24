@@ -1,6 +1,5 @@
 package com.example.irentmy.ui.account
 
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,8 +9,11 @@ import com.example.irentmy.data.remote.RetrofitClient
 import com.example.irentmy.data.repository.RentalRepository
 import com.example.irentmy.util.PrefsManager
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AccountViewModel(app: Application) : AndroidViewModel(app) {
@@ -27,34 +29,22 @@ class AccountViewModel(app: Application) : AndroidViewModel(app) {
 
     val email: String = PrefsManager.getEmail(ctx) ?: ""
 
-    private val _myListings = MutableStateFlow<List<RentalItem>>(emptyList())
-    val myListings: StateFlow<List<RentalItem>> = _myListings.asStateFlow()
-
-    init { loadMyListings() }
+    // se reîmprospătează automat la fiecare schimbare din Room sau a numelui
+    val myListings: StateFlow<List<RentalItem>> =
+        combine(db.rentalDao().getAllFlow(), _name) { all, myName ->
+            if (myName.isBlank()) emptyList()
+            else all.filter { it.ownerName.trim().equals(myName.trim(), ignoreCase = true) }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun onNameChange(v: String) { _name.value = v }
     fun onBioChange(v: String) { _bio.value = v }
 
     fun saveProfile() {
-        PrefsManager.saveName(ctx, _name.value)
-        PrefsManager.saveBio(ctx, _bio.value)
-        loadMyListings()
-    }
-
-    fun loadMyListings() {
-        viewModelScope.launch {
-            val all = db.rentalDao().getAll()
-            val myName = _name.value.trim()
-            _myListings.value =
-                if (myName.isBlank()) emptyList()
-                else all.filter { it.ownerName.equals(myName, ignoreCase = true) }
-        }
+        PrefsManager.saveName(ctx, _name.value.trim())
+        PrefsManager.saveBio(ctx, _bio.value.trim())
     }
 
     fun deleteListing(id: String) {
-        viewModelScope.launch {
-            repository.deleteRental(id)
-            loadMyListings()
-        }
+        viewModelScope.launch { repository.deleteRental(id) }
     }
 }
