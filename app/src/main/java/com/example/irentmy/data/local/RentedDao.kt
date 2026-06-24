@@ -11,6 +11,7 @@ interface RentedDao {
     @Insert
     suspend fun insert(item: RentedItem)
 
+
     @Query("SELECT * FROM rented_items ORDER BY rentedAt DESC")
     fun getAll(): Flow<List<RentedItem>>
 }
