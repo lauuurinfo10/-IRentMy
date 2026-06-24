@@ -24,11 +24,17 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
     private val _uiState = MutableStateFlow(FeedUiState())
     val uiState: StateFlow<FeedUiState> = _uiState.asStateFlow()
 
+    private val _query = MutableStateFlow("")
+    val query: StateFlow<String> = _query.asStateFlow()
+
     init {
         val db = AppDatabase.getInstance(app)
         repository = RentalRepository(RetrofitClient.api, db.rentalDao(), db.rentedDao())
         loadRentals()
     }
+
+    fun onQueryChange(text: String) { _query.value = text }
+
     fun loadRentals() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -38,7 +44,7 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = "Nu s-au putut încărca datele"
+                    error = "Nu s-au putut incarca datele"
                 )
             }
         }
